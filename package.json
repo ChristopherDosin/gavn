@@ -39,6 +39,7 @@
     "mysql": "^2.16.0",
     "numeral": "^2.0.6",
     "tiptap": "^1.5.0",
+    "url-parse": "^1.4.4",
     "vue": "^2.5.21",
     "vue-router": "^3.0.2",
     "vuex": "^3.0.1"
@@ -51,5 +52,8 @@
   },
   "autoload": {
     "App": "./app"
+  },
+  "engines": {
+    "node": "8.5.0"
   }
 }
