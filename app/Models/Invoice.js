@@ -38,8 +38,8 @@ class Invoice extends Model {
   }
 
   getDateDifference({ invoice_date, due_date }) {
-    let invoiceDate = moment(invoice_date).format('YYYY, M, D');
-    let dueDate = moment(due_date).format('YYYY, M, D');
+    let invoiceDate = moment(invoice_date);
+    let dueDate = moment(due_date);
     let total = moment(invoiceDate);
 
     return total.diff(dueDate, 'days');

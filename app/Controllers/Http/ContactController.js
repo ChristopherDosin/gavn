@@ -4,6 +4,8 @@ const Contact = use('App/Models/Contact');
 const Mail = use('Mail');
 const { validate } = use('Validator');
 
+const moment = use('moment');
+
 class ContactController {
   async index() {
     const allContacts = await Contact.all();

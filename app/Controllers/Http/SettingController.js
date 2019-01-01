@@ -5,20 +5,42 @@ const Settings = use('App/Models/Setting');
 
 class SettingController {
   async index() {
-    const query = await Settings.query()
-      .with('country')
-      .first();
-    return query;
+    try {
+      const query = await Settings.query()
+        .with('country')
+        .firstOrFail();
+      return query;
+    } catch (error) {
+      return;
+    }
   }
 
   async update({ request }) {
-    const all = request.all();
-    let settings = await Settings.firstOrFail();
+    const settings = Settings.query()
+      .firstOrFail()
+      .catch(() => {
+        console.log('error');
+      });
 
-    settings.merge(all);
-    await settings.save();
+    if (settings) {
+      let settings = await Settings.firstOrFail();
+      settings.merge(request.all());
 
-    return settings;
+      await settings.save();
+
+      return settings;
+    } else {
+      let settings = new Settings();
+      settings.fill(request.all());
+
+      await settings.save();
+
+      return settings;
+    }
+  }
+
+  async store({ request }) {
+    console.log(request.all());
   }
 
   async uploadLogo({ request, response }) {

@@ -1,17 +1,24 @@
 <template>
   <div>
-    <a-row type="flex" style="padding: 10px 0 10px 0;">
-      <a-col :span="12"></a-col>
+    <a-row type="flex">
+      <a-col :span="12">
+        <h1>Contact List</h1>
+      </a-col>
       <a-col :span="12">
         <router-link
-          to="/contacts/create"
+          :to="{name: 'createcontact'}"
           class="ant-btn ant-btn-primary"
           style="float: right; background: #57c40a; border-color: #57c40a;"
         >Add contact</router-link>
       </a-col>
     </a-row>
     <div class="card-background">
-      <a-spin :spinning="loading">
+      <template v-if="loading">
+        <a-spin tip="Loading...">
+          <a-skeleton :paragraph="{rows: 10}"/>
+        </a-spin>
+      </template>
+      <template v-else>
         <a-table :columns="columns" :dataSource="contact">
           <template slot="contactName" slot-scope="text, record">
             <router-link
@@ -27,7 +34,7 @@
             </small>
           </template>
         </a-table>
-      </a-spin>
+      </template>
     </div>
   </div>
 </template>
@@ -62,14 +69,22 @@ export default {
   },
   methods: {
     async getAllContacts() {
-      let { data } = await this.$http.get(`/contacts`);
+      this.loading = true;
+      let { data } = await this.$http.get(`/contacts`).takeAtLeast(500);
+
       this.contact = data;
+      this.loading = false;
     }
   }
 };
 </script>
-<style>
-.ant-table-pagination.ant-pagination {
-  margin-right: 20px;
+<style lang="scss" scoped>
+.ant-skeleton {
+  margin: 30px;
+}
+.ant-table-pagination {
+  &.ant-pagination {
+    margin-right: 20px;
+  }
 }
 </style>

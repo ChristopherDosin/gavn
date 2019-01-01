@@ -252,12 +252,6 @@ export default {
 };
 </script>
 <style lang="scss">
-#organisationForm .ant-form-item-label {
-  text-align: left;
-}
-#organisationForm label {
-  font-size: 12px;
-}
 .formRow {
   margin-bottom: 18px;
 }

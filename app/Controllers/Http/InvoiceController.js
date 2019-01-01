@@ -9,6 +9,7 @@ class InvoiceController {
   async index() {
     const allInvoices = await Invoice.query()
       .with('invoiceItems')
+      .with('invoiceStatus')
       .with('contact')
       .fetch();
 

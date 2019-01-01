@@ -5,23 +5,23 @@
         <a-menu mode="vertical" id="sidebarMenu" class="card-background">
           <a-menu-item key="1">
             <a-icon type="shop"/>
-            <router-link to="/settings/organisation">Organisation Settings</router-link>
+            <router-link :to="{name: 'organisationSettings'}">Organisation Settings</router-link>
           </a-menu-item>
           <a-menu-item key="2">
             <a-icon type="calculator"/>
-            <router-link to="/settings/invoice">Invoice Settings</router-link>
+            <router-link :to="{name: 'invoiceSettings'}">Invoice Settings</router-link>
           </a-menu-item>
           <a-menu-item key="3">
             <a-icon type="global"/>
-            <router-link to="/settings/taxrates">Tax Rates</router-link>
+            <router-link :to="{name: 'taxrateSettings'}">Tax Rates</router-link>
           </a-menu-item>
           <a-menu-item key="4">
             <a-icon type="wallet"/>
-            <router-link to="/settings/currencies">Currencies</router-link>
+            <router-link :to="{name: 'currencies'}">Currencies</router-link>
           </a-menu-item>
           <a-menu-item key="5">
             <a-icon type="bank"/>
-            <router-link to="/settings/invoice">Bank Account</router-link>
+            <router-link :to="{name: 'taxrateSettings'}">Bank Account</router-link>
           </a-menu-item>
         </a-menu>
       </a-col>

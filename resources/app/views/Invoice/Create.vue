@@ -94,12 +94,9 @@
                 <template slot="unitCost" slot-scope="text, record, index">
                   <input v-model="dataSource[index].cost" class="ant-input" type="text">
                 </template>
-                <template
-                  slot="total"
-                  slot-scope="text, record, index"
-                >{{ dataSource[index].quantity * dataSource[index].cost}}</template>
+                <template slot="total" slot-scope="text, record, index">{{ total }}</template>
               </a-table>
-              <a-button class="editable-add-btn" @click="handleAdd">Add new item</a-button>
+              <a-button id="editable-add-btn" type="primary" @click="handleAdd">Add new item</a-button>
             </a-row>
             <a-row class="invoiceTotal">
               <a-col :span="7" :offset="17">
@@ -192,7 +189,7 @@ export default {
           scopedSlots: { customRender: "unitCost" }
         },
         {
-          title: "Total",
+          title: "Total Net",
           dataIndex: "total",
           width: "15%",
           scopedSlots: { customRender: "total" }
@@ -217,19 +214,20 @@ export default {
     async handleSubmit(e) {
       e.preventDefault();
       try {
-        let response = await this.$http.post(`/invoice`, {
-          invoiceItems: this.dataSource,
-          contactId: this.selectedContact.id,
-          invoiceDate: this.invoiceDate,
-          dueDate: this.dueDate
+        let response = await this.$http
+          .post(`/invoice`, {
+            invoiceItems: this.dataSource,
+            contactId: this.selectedContact.id,
+            invoiceDate: this.invoiceDate,
+            dueDate: this.dueDate
+          })
+          .takeAtLeast(500);
+
+        this.$notification["success"]({
+          message: "Success",
+          description: `Invoice created succesfully`
         });
-        setTimeout(() => {
-          this.$notification["success"]({
-            message: "Success",
-            description: `Invoice created succesfully`
-          });
-          this.$router.push({ name: "invoices" });
-        }, 1000);
+        this.$router.push({ name: "invoices" });
       } catch (error) {
         this.$notification["error"]({
           message: "Error",
@@ -252,16 +250,31 @@ export default {
     async getNextInvoiceNumber() {
       let { data } = await this.$http.get(`/invoice/getLatestInvoiceId`);
       this.nextInvoiceNumber = ++data;
+    },
+    async findOrFailContact() {
+      const { contactDetails } = this.$route.params;
+      if (contactDetails) {
+        this.selectedContact = contactDetails;
+      } else {
+        // TO DO
+        // IF YOU ARE COMING NOT FROM A CONTACT PAGE
+        console.log("no contact");
+      }
     }
   },
   mounted: function() {
+    this.findOrFailContact();
     this.getAllSettings();
     this.getNextInvoiceNumber();
+    this.handleFocus();
   }
 };
 </script>
 
 <style lang="scss">
+#editable-add-btn {
+  margin: 20px;
+}
 .contentHeader {
   font-weight: bold;
   font-size: 1.1rem;
@@ -304,7 +317,6 @@ export default {
     /* The second layer shadow */ 0 -10px 1px -4px rgba(0, 0, 0, 0.15),
     /* The third layer */ 0 -20px 0 -10px #eee,
     /* The third layer shadow */ 0 -20px 1px -9px rgba(0, 0, 0, 0.15);
-  /* Padding for demo purposes */
   padding: 30px;
 }
 

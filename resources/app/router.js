@@ -32,7 +32,6 @@ let router = new Router({
     },
     {
       path: '/settings',
-      name: 'settings',
       component: SettingsIndex,
       children: [
         {

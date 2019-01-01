@@ -8,16 +8,16 @@
       :style="{ lineHeight: '52px' }"
     >
       <a-menu-item key="1">
-        <router-link to="/">Home</router-link>
+        <router-link :to="{name: 'home'}">Home</router-link>
       </a-menu-item>
       <a-menu-item key="2">
-        <router-link to="/contacts">Contacts</router-link>
+        <router-link :to="{name: 'contacts'}">Contacts</router-link>
       </a-menu-item>
       <a-menu-item key="3">
-        <router-link to="/invoices">Invoices</router-link>
+        <router-link :to="{name: 'invoices'}">Invoices</router-link>
       </a-menu-item>
       <a-menu-item key="4">
-        <router-link to="/settings">Settings</router-link>
+        <router-link :to="{name: 'organisationSettings'}">Settings</router-link>
       </a-menu-item>
     </a-menu>
   </a-layout-header>

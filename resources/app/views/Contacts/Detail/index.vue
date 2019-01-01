@@ -71,7 +71,8 @@ export default {
   data() {
     return {
       contactDetail: "",
-      invoices: []
+      invoices: [],
+      loading: false
     };
   },
   methods: {
