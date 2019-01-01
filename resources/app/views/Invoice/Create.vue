@@ -7,6 +7,7 @@
           <a-row style="margin-bottom: 30px;">
             <a-col :span="17">
               <a-select
+                v-if="showSelectContact"
                 showSearch
                 placeholder="Select a contact"
                 optionFilterProp="children"
@@ -94,7 +95,10 @@
                 <template slot="unitCost" slot-scope="text, record, index">
                   <input v-model="dataSource[index].cost" class="ant-input" type="text">
                 </template>
-                <template slot="total" slot-scope="text, record, index">{{ total }}</template>
+                <template
+                  slot="total"
+                  slot-scope="text, record, index"
+                >{{ dataSource[index].cost * dataSource[index].quantity }}</template>
               </a-table>
               <a-button id="editable-add-btn" type="primary" @click="handleAdd">Add new item</a-button>
             </a-row>
@@ -135,13 +139,14 @@ export default {
         total += val.cost * val.quantity;
       });
 
-      let result = numeral(total).format("$ 0,0.00");
+      let result = numeral(total).format("$ 0,00.00");
 
       return result;
     }
   },
   data() {
     return {
+      showSelectContact: false,
       dateFormat: "YYYY/MM/DD",
       contacts: [],
       selectedContact: null,
@@ -254,11 +259,10 @@ export default {
     async findOrFailContact() {
       const { contactDetails } = this.$route.params;
       if (contactDetails) {
+        this.showSelectContact = false;
         this.selectedContact = contactDetails;
       } else {
-        // TO DO
-        // IF YOU ARE COMING NOT FROM A CONTACT PAGE
-        console.log("no contact");
+        this.showSelectContact = true;
       }
     }
   },

@@ -13,7 +13,7 @@ Vue.prototype.$http = axios;
 Vue.use(Antd);
 
 window.axios = axios;
-axios.defaults.baseURL = `http://127.0.0.1:3333/api/v1`;
+axios.defaults.baseURL = `/api/v1`;
 
 // Creates a new promise that automatically resolves after some timeout:
 Promise.delay = function(time) {
