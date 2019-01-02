@@ -5,7 +5,7 @@
         <a-spin :spinning="loading.form">
           <a-form id="organisationForm" :form="form" @submit="handleSubmit">
             <a-card title="Basic Information" :bordered="false">
-              <a-form-item label="Display name" :labelCol="{ span: 5 }" :wrapperCol="{ span: 12 }">
+              <a-form-item label="Display name" :labelCol="{ span: 8}" :wrapperCol="{ span: 14 }">
                 <a-input
                   v-decorator="['name', {
               initialValue: data.name,
@@ -16,8 +16,8 @@
               </a-form-item>
               <a-form-item
                 label="Legal / Trading name"
-                :labelCol="{ span: 5 }"
-                :wrapperCol="{ span: 12 }"
+                :labelCol="{ span: 8}"
+                :wrapperCol="{ span: 14 }"
               >
                 <a-input
                   v-decorator="['legal_name', {
@@ -27,7 +27,7 @@
                   placeholder="Official name to appear on documents"
                 />
               </a-form-item>
-              <a-form-item label="Logo" :labelCol="{ span: 5 }" :wrapperCol="{ span: 12 }">
+              <a-form-item label="Logo" :labelCol="{ span: 8}" :wrapperCol="{ span: 14 }">
                 <a-upload
                   name="avatar"
                   listType="picture-card"
@@ -46,8 +46,8 @@
               </a-form-item>
               <a-form-item
                 label="Business Registration Number"
-                :labelCol="{ span: 5 }"
-                :wrapperCol="{ span: 12 }"
+                :labelCol="{ span: 8}"
+                :wrapperCol="{ span: 14 }"
               >
                 <a-input
                   v-decorator="['registration_number', {
@@ -58,8 +58,8 @@
               </a-form-item>
               <a-form-item
                 label="Organisation description"
-                :labelCol="{ span: 5 }"
-                :wrapperCol="{ span: 12 }"
+                :labelCol="{ span: 8}"
+                :wrapperCol="{ span: 14 }"
               >
                 <a-textarea
                   v-decorator="['description', {
@@ -73,11 +73,7 @@
             </a-card>
 
             <a-card title="Contact Details" style="border-top: none;" :bordered="false">
-              <a-form-item
-                label="Postal address"
-                :labelCol="{ span: 5 }"
-                :wrapperCol="{ span: 12 }"
-              >
+              <a-form-item label="Postal address" :labelCol="{ span: 8}" :wrapperCol="{ span: 14 }">
                 <a-textarea
                   v-decorator="['postal_address', {
               initialValue: data.postal_address
@@ -124,21 +120,21 @@
                   >{{country.name}}</a-select-option>
                 </a-select>
               </a-form-item>
-              <a-form-item label="Telephone" :labelCol="{ span: 5 }" :wrapperCol="{ span: 12 }">
+              <a-form-item label="Telephone" :labelCol="{ span: 8}" :wrapperCol="{ span: 14 }">
                 <a-input
                   v-decorator="['phone', {
               initialValue: data.phone
             }]"
                 />
               </a-form-item>
-              <a-form-item label="Email" :labelCol="{ span: 5 }" :wrapperCol="{ span: 12 }">
+              <a-form-item label="Email" :labelCol="{ span: 8}" :wrapperCol="{ span: 14 }">
                 <a-input
                   v-decorator="['email', {
               initialValue: data.email
             }]"
                 />
               </a-form-item>
-              <a-form-item label="Website" :labelCol="{ span: 5 }" :wrapperCol="{ span: 12 }">
+              <a-form-item label="Website" :labelCol="{ span: 8}" :wrapperCol="{ span: 14 }">
                 <a-input
                   v-decorator="['website', {
               initialValue: data.website
