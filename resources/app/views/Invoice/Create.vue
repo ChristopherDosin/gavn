@@ -98,15 +98,30 @@
                 <template
                   slot="total"
                   slot-scope="text, record, index"
-                >{{ dataSource[index].cost * dataSource[index].quantity }}</template>
+                >{{ getItemTotal(dataSource[index].cost, dataSource[index].quantity)}}</template>
               </a-table>
               <a-button id="editable-add-btn" type="primary" @click="handleAdd">Add new item</a-button>
             </a-row>
             <a-row class="invoiceTotal">
               <a-col :span="7" :offset="17">
                 <div class="sum">
-                  <span>Total:</span>
-                  <div class="sumValue">{{total}}</div>
+                  <a-row type="flex" style="width: 100%;">
+                    <a-col :span="12">
+                      <strong>Sub Total :
+                        <br>
+                        Tax ({{taxRate * 100}}%)
+                        <br>Total :
+                        <br>
+                      </strong>
+                    </a-col>
+                    <a-col :span="12">
+                      {{subTotal}}
+                      <br>
+                      {{getTax()}}
+                      <br>
+                      {{total}}
+                    </a-col>
+                  </a-row>
                 </div>
               </a-col>
             </a-row>
@@ -131,19 +146,6 @@ import numeral from "numeral";
 
 export default {
   name: "CreateInvoice",
-  computed: {
-    total: function() {
-      let total = [];
-
-      Object.entries(this.dataSource).forEach(([key, val]) => {
-        total += val.cost * val.quantity;
-      });
-
-      let result = numeral(total).format("$ 0,00.00");
-
-      return result;
-    }
-  },
   data() {
     return {
       showSelectContact: false,
@@ -157,6 +159,7 @@ export default {
         dateFormat: "YYYY/MM/DD",
         monthFormat: "YYYY/MM"
       },
+      taxRate: 0.19,
       nextInvoiceNumber: "",
       form: this.$form.createForm(this),
       companyDetails: [],
@@ -202,8 +205,39 @@ export default {
       ]
     };
   },
+  computed: {
+    subTotal: function() {
+      let subTotal = this.getSubTotal();
+      let result = numeral(subTotal).format("$ 0,00.00");
+      return result;
+    },
+    total: function() {
+      let total = this.getTotal();
+      let result = numeral(total).format("$ 0,00.00");
+      return result;
+    }
+  },
   methods: {
     moment,
+    getItemTotal(cost, quantity) {
+      return numeral(cost * quantity).format("$ 0,00.00");
+    },
+    getSubTotal() {
+      let subTotal = 0;
+      for (let i = this.dataSource.length - 1; i >= 0; i--) {
+        subTotal += this.dataSource[i].cost * this.dataSource[i].quantity;
+      }
+      return subTotal;
+    },
+    getTotal() {
+      let total = this.getSubTotal() + this.getSubTotal() * this.taxRate;
+      return total;
+    },
+    getTax() {
+      let tax = this.getTotal() - this.getSubTotal();
+      let result = numeral(tax).format("$ 0,00.00");
+      return result;
+    },
     handleAdd() {
       const { count, dataSource } = this;
       const newData = {
