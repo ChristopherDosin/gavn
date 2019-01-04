@@ -56,18 +56,19 @@ class InvoiceController {
       invoiceNet += value.cost * value.quantity;
     });
 
-    /*
-     * Get the latest invoice number from the last record
-     */
-    let lastInvoice = await Database.select('invoice_number')
+    const lastInvoice = await Database.select('invoice_number')
       .from('invoices')
       .orderBy('invoice_number', 'desc')
       .first();
 
-    /*
-     * Increment the latest invoice number by 1
-     */
-    let lastInvoiceNumber = ++lastInvoice.invoice_number;
+    let lastInvoiceNumber = null;
+
+    if (lastInvoice) {
+      lastInvoiceNumber = ++lastInvoice.invoice_number;
+    } else {
+      // TODO get default number from database
+      lastInvoiceNumber = 10000;
+    }
 
     /*
      * Save the new invoice
