@@ -9,6 +9,17 @@
           :numberStyle="{backgroundColor: getStatusColor(record.invoice_status_id)} "
         />
       </template>
+      <template slot="actions" slot-scope="text, record, index">
+        <a-popconfirm
+          title="Do you want to print the invoice?"
+          @confirm="generatePdf(record.id)"
+          okText="Print"
+          cancelText="Cancel"
+        >
+          <a-icon type="printer"/>
+        </a-popconfirm>
+        <a-icon type="edit"/>
+      </template>
     </a-table>
   </div>
 </template>
@@ -20,34 +31,41 @@ const columns = [
     title: "Number",
     dataIndex: "invoice_number",
     key: "invoice_number",
-    width: "20%"
+    width: "15%"
   },
   {
     title: "Amount",
     dataIndex: "invoice_net",
     key: "invoice_net",
-    width: "20%"
+    width: "15%"
   },
   {
     title: "Invoice date",
     dataIndex: "invoice_date",
     key: "invoice_date",
-    width: "30%",
+    width: "18%",
     scopedSlots: { customRender: "invoiceDate" }
   },
   {
     title: "Due date",
     dataIndex: "due_date",
     key: "due_date",
-    width: "30%",
+    width: "18%",
     scopedSlots: { customRender: "dueDate" }
   },
   {
     title: "Status",
     dataIndex: "invoiceStatus.name",
     key: "invoiceStatus.id",
-    width: "20%",
+    width: "10%",
     scopedSlots: { customRender: "invoiceStatus" }
+  },
+  {
+    title: "",
+    dataIndex: "actions",
+    key: "actions",
+    width: "15%",
+    scopedSlots: { customRender: "actions" }
   }
 ];
 
@@ -76,6 +94,10 @@ export default {
           return "#1890ff";
           break;
       }
+    },
+    async generatePdf(id) {
+      const { data } = await this.$http.get(`/invoices/generatepdf/${id}`);
+      return data;
     }
   }
 };

@@ -18,6 +18,17 @@
             :numberStyle="{backgroundColor: getStatusColor(record.invoice_status_id)} "
           />
         </template>
+        <template slot="actions" slot-scope="text, record, index">
+          <a-popconfirm
+            title="Do you want to print the invoice?"
+            @confirm="generatePdf(record.id)"
+            okText="Print"
+            cancelText="Cancel"
+          >
+            <a-icon type="printer"/>
+          </a-popconfirm>
+          <a-icon type="edit"/>
+        </template>
       </a-table>
     </template>
   </div>
@@ -37,7 +48,7 @@ const columns = [
     title: "Contact Name",
     dataIndex: "contact.contact_name",
     key: "contact.contact_name",
-    width: "40%"
+    width: "26%"
   },
   {
     title: "Amount",
@@ -65,6 +76,11 @@ const columns = [
     key: "invoiceStatus.id",
     width: "10%",
     scopedSlots: { customRender: "invoiceStatus" }
+  },
+  {
+    title: "Actions",
+    width: "15%",
+    scopedSlots: { customRender: "actions" }
   }
 ];
 
@@ -92,6 +108,10 @@ export default {
 
       this.invoices = data;
       this.loading = false;
+    },
+    async generatePdf(id) {
+      const { data } = await this.$http.get(`/invoices/generatepdf/${id}`);
+      return data;
     },
     getStatusColor(statusId) {
       switch (statusId) {

@@ -2,8 +2,15 @@
 
 const Database = use('Database');
 const Invoice = use('App/Models/Invoice');
+const Helpers = use('Helpers');
 
 const _ = require('lodash');
+const Fs = require('fs');
+const Path = require('path');
+const Util = require('util');
+const Puppeteer = require('puppeteer');
+const Handlebars = require('handlebars');
+const ReadFile = Util.promisify(Fs.readFile);
 
 class InvoiceController {
   async index() {
@@ -73,6 +80,40 @@ class InvoiceController {
     await invoice.invoiceItems().createMany(invoiceItems);
 
     return invoice;
+  }
+
+  async html(id) {
+    try {
+      const invoiceData = await Invoice.query()
+        .where('id', id)
+        .with('invoiceItems')
+        .first();
+
+      const invoicePath = Helpers.viewsPath('invoice.html');
+
+      const templatePath = Path.resolve(invoicePath);
+      const content = await ReadFile(templatePath, 'utf8');
+
+      const template = Handlebars.compile(content);
+
+      return template(invoiceData);
+    } catch (error) {
+      throw new Error('Cannot create invoice HTML template.');
+    }
+  }
+
+  async pdf({ params }) {
+    if (!params.id) {
+      return;
+    }
+
+    const html = await this.html(params.id);
+
+    const browser = await Puppeteer.launch();
+    const page = await browser.newPage();
+    await page.setContent(html);
+
+    return page.pdf();
   }
 }
 

@@ -23,6 +23,8 @@ Route.group(() => {
   Route.get('/invoice/getLatestInvoiceId', 'InvoiceController.getLatestInvoiceId');
   Route.post('/invoice', 'InvoiceController.store');
 
+  Route.get('/invoices/generatepdf/:id', 'InvoiceController.pdf');
+
   Route.get('/taxrate', 'TaxRateController.index');
   Route.post('/taxrate', 'TaxRateController.store');
 
