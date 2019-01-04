@@ -33,6 +33,12 @@ class InvoiceController {
       .orderBy('invoice_number', 'desc')
       .first();
 
+    if (typeof lastInvoice === 'undefined') {
+      // TODO
+      // Get default value from database
+      return 10000;
+    }
+
     return lastInvoice.invoice_number;
   }
 
