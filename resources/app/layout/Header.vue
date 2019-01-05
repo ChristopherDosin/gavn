@@ -1,6 +1,5 @@
 <template>
   <a-layout-header>
-    <div class="logo"/>
     <a-menu
       theme="dark"
       mode="horizontal"
@@ -34,6 +33,9 @@ export default {
   background: #0078c8;
   margin-bottom: 15px;
   .ant-menu {
+    max-width: 980px;
+    width: 100%;
+    margin: 0px auto;
     &.ant-menu-dark {
       font-weight: bold;
       background: #0078c8;
