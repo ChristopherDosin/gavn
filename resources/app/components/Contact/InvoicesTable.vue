@@ -64,7 +64,7 @@ const columns = [
     title: "",
     dataIndex: "actions",
     key: "actions",
-    width: "15%",
+    width: "10%",
     scopedSlots: { customRender: "actions" }
   }
 ];
@@ -96,8 +96,8 @@ export default {
       }
     },
     async generatePdf(id) {
-      const { data } = await this.$http.get(`/invoices/generatepdf/${id}`);
-      return data;
+      // TODO get .pdf from backend
+      return;
     }
   }
 };
