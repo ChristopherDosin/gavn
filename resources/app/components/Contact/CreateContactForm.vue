@@ -98,6 +98,8 @@
           />
         </a-form-item>
 
+        <check-vat/>
+
         <a-form-item label="Postal Address" :labelCol="{ span: 5 }" :wrapperCol="{ span: 12 }">
           <a-input
             v-decorator="['postal_address', {
@@ -160,8 +162,12 @@
   </a-spin>
 </template>
 <script>
+import CheckVat from "@/components/Settings/CheckVat";
 export default {
   name: "CreateContact",
+  components: {
+    CheckVat
+  },
   data() {
     return {
       data: "",
