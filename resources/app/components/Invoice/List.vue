@@ -121,6 +121,12 @@ export default {
         case 2:
           return "#1890ff";
           break;
+        case 3:
+          return "#e32929";
+          break;
+        default:
+          return "#000";
+          break;
       }
     }
   },
