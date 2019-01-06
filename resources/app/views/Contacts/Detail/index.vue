@@ -44,11 +44,20 @@
       </a-row>
       <a-row :gutter="16">
         <a-col :span="17">
-          <template v-if="!invoices.length">
-            <empty-contact/>
+          <template v-if="loading">
+            <div class="card-background" style="padding: 30px;">
+              <a-spin tip="Loading...">
+                <a-skeleton :paragraph="{rows: 10}"/>
+              </a-spin>
+            </div>
           </template>
           <template v-else>
-            <invoice-table :invoice="invoices"/>
+            <template v-if="!invoices.length">
+              <empty-contact/>
+            </template>
+            <template v-else>
+              <invoice-table :invoice="invoices"/>
+            </template>
           </template>
         </a-col>
         <a-col :span="7">
@@ -72,7 +81,7 @@ export default {
     return {
       contactDetail: "",
       invoices: [],
-      loading: false
+      loading: true
     };
   },
   methods: {
@@ -80,10 +89,11 @@ export default {
       this.contactDetail = contactDetails;
     },
     async getContactDetails() {
-      let { data } = await this.$http.get(
-        `/contacts/${this.$route.params.pseudoId}`
-      );
+      let { data } = await this.$http
+        .get(`/contacts/${this.$route.params.pseudoId}`)
+        .takeAtLeast(500);
       this.invoices = data.invoice;
+      this.loading = false;
     }
   },
   mounted: function() {
