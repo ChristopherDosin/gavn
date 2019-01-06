@@ -1,6 +1,6 @@
 <template>
-  <div id="app" style="height: 100%;">
-    <a-layout id="components-layout-demo-top" class="layout" style="height: 100%;">
+  <div id="app">
+    <a-layout id="components-layout-demo-top" class="layout">
       <navbar/>
 
       <a-layout-content id="layoutContent" style="max-width: 980px; width: 100%; margin: 0 auto;">
