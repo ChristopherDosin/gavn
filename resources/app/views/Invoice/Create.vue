@@ -46,9 +46,9 @@
             </a-col>
             <a-col :span="7">
               <ul class="metaList">
-                <li>
+                <li v-if="companyDetails.vat_id">
                   <div>VAT ID</div>
-                  <span v-if="selectedContact">{{selectedContact.vat_id}}</span>
+                  <span>{{companyDetails.vat_id}}</span>
                 </li>
                 <li>
                   <div>Date</div>
@@ -103,13 +103,14 @@
               <a-button id="editable-add-btn" type="primary" @click="handleAdd">Add new item</a-button>
             </a-row>
             <a-row class="invoiceTotal">
-              <a-col :span="7" :offset="17">
+              <a-col :span="17"></a-col>
+              <a-col :span="7">
                 <div class="sum">
                   <a-row type="flex" style="width: 100%;">
                     <a-col :span="12">
                       <strong>Sub Total :
                         <br>
-                        Tax ({{taxRate * 100}}%)
+                        Tax ({{taxRate * 100}}%):
                         <br>Total :
                         <br>
                       </strong>
@@ -131,21 +132,39 @@
 
       <div id="saveForm">
         <div id="saveFormInner">
-          <a class="ant-btn ant-btn-default" @click="$router.go(-1)">Cancel</a>
-          <a-form-item>
-            <a-button type="primary" htmlType="submit">Save</a-button>
-          </a-form-item>
+          <a-row type="flex" justify="space-between" style="width: 100%;">
+            <a-col :span="12">
+              <a-button type="dashed" htmlType="submit" size="large" @click="$router.go(-1)">Cancel</a-button>
+            </a-col>
+            <a-col :span="12">
+              <div style="display: flex; justify-content: flex-end;">
+                <a-form-item style="margin-right: 20px;">
+                  <a-button type="danger" htmlType="submit" size="large">Save as draft</a-button>
+                </a-form-item>
+                <a-form-item>
+                  <a-button type="primary" htmlType="submit" size="large">Save the invoice</a-button>
+                </a-form-item>
+              </div>
+            </a-col>
+          </a-row>
         </div>
       </div>
     </a-form>
+
+    <invoice-feedback/>
   </div>
 </template>
 <script>
 import moment from "moment";
 import numeral from "numeral";
 
+import InvoiceFeedback from "@/components/Invoice/InvoiceFeedback";
+
 export default {
   name: "CreateInvoice",
+  components: {
+    InvoiceFeedback
+  },
   data() {
     return {
       showSelectContact: false,
@@ -160,6 +179,7 @@ export default {
         monthFormat: "YYYY/MM"
       },
       taxRate: 0.19,
+      taxRates: [],
       nextInvoiceNumber: "",
       form: this.$form.createForm(this),
       companyDetails: [],
@@ -238,6 +258,10 @@ export default {
       let result = numeral(tax).format("$ 0,00.00");
       return result;
     },
+    async getTaxRates() {
+      const { data } = await this.$http.get(`taxrate`);
+      this.taxRates = data;
+    },
     handleAdd() {
       const { count, dataSource } = this;
       const newData = {
@@ -305,13 +329,20 @@ export default {
     this.getAllSettings();
     this.getNextInvoiceNumber();
     this.handleFocus();
+    this.getTaxRates();
   }
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 #editable-add-btn {
   margin: 20px;
+}
+.taxRateContainer {
+  background-color: #f9edbe;
+  border: 1px solid #f0c36d;
+  padding: 30px;
+  margin-right: 30px;
 }
 .contentHeader {
   font-weight: bold;
@@ -391,8 +422,11 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
+  box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.08);
   background: #fff;
-  height: 55px;
+  border-top: 1px solid #e2e3e4;
+  padding: 10px 0 10px 0;
+  height: auto;
   display: flex;
   align-items: center;
   &:before {
