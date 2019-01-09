@@ -4,6 +4,14 @@
 const Model = use('Model');
 
 class InvoiceStatus extends Model {
+  static get createdAtColumn() {
+    return null;
+  }
+
+  static get updatedAtColumn() {
+    return null;
+  }
+
   invoice() {
     return this.hasMany('App/Models/Invoice');
   }
