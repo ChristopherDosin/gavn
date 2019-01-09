@@ -1,6 +1,7 @@
 'use strict';
 
 const Database = use('Database');
+const Drive = use('Drive');
 const Invoice = use('App/Models/Invoice');
 const Helpers = use('Helpers');
 
@@ -75,6 +76,8 @@ class InvoiceController {
      */
     const invoice = await Invoice.create({
       invoice_number: lastInvoiceNumber,
+      // TODO invoiceStatusId
+      invoice_status_id: 2,
       invoice_net: invoiceNet,
       contact_id: request.input('contactId'),
       invoice_date: request.input('invoiceDate'),
@@ -120,7 +123,9 @@ class InvoiceController {
     const page = await browser.newPage();
     await page.setContent(html);
 
-    return page.pdf();
+    const invoice = await page.pdf();
+
+    return invoice;
   }
 }
 
