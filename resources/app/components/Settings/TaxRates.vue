@@ -2,37 +2,45 @@
   <div class="card-background">
     <a-row type="flex">
       <a-col :span="24">
-        <a-card title="Tax Rates" :bordered="false">
-          <add-tax-rate-modal/>
+        <a-card title="Tax Rates" :bordered="false" :bodyStyle="bodyStyle">
+          <add-tax-rate-modal slot="extra"/>
           <a-table :columns="columns" :dataSource="rates">
-            <template slot="test" slot-scope="rate, record, index">{{rate | percentage}}</template>
+            <template slot="rate" slot-scope="rate, record, index">{{rate | percentage}}</template>
+            <template slot="actions" slot-scope="text, record, index">
+              <a-icon type="delete"/>
+            </template>
           </a-table>
         </a-card>
       </a-col>
     </a-row>
   </div>
 </template>
+
 <script>
 import numeral from "numeral";
 import AddTaxRateModal from "@/components/Settings/InvoiceSettings/AddTaxRateModal";
 
+const bodyStyle = {
+  padding: 0
+};
+
 const columns = [
   {
     title: "Name",
-    dataIndex: "name"
+    dataIndex: "name",
+    width: "45%"
   },
   {
     title: "Rate",
     dataIndex: "rate",
-    scopedSlots: { customRender: "test" }
-  },
-  {
-    title: "Type",
-    dataIndex: "type"
+    width: "40%",
+    scopedSlots: { customRender: "rate" }
   },
   {
     title: "Action",
-    dataIndex: "action"
+    dataIndex: "action",
+    width: "15%",
+    scopedSlots: { customRender: "actions" }
   }
 ];
 
@@ -43,6 +51,7 @@ export default {
   },
   data() {
     return {
+      bodyStyle,
       rates: [],
       columns
     };

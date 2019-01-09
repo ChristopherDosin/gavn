@@ -1,6 +1,6 @@
 <template>
   <div>
-    <a-button type="primary" @click="showModal">New Collection</a-button>
+    <a-button type="primary" @click="showModal">Add new Tax Rate</a-button>
     <collection-create-form
       ref="collectionForm"
       :visible="visible"
