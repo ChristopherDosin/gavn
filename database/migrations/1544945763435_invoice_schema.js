@@ -9,6 +9,7 @@ class InvoiceSchema extends Schema {
       table.increments();
       table.integer('contact_id').unsigned();
       table.integer('invoice_status_id').unsigned();
+      table.boolean('is_draft').defaultTo(false);
 
       table.string('invoice_number').notNullable();
       table.decimal('invoice_net').nullable();
