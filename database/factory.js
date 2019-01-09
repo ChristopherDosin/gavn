@@ -27,3 +27,9 @@ Factory.blueprint('App/Models/Setting', async faker => {
     website: faker.url()
   };
 });
+
+Factory.blueprint('App/Models/InvoiceStatus', async (faker, i, data) => {
+  return {
+    name: ['approved', 'pending', 'cancled'][i]
+  };
+});
