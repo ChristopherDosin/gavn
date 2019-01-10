@@ -32,6 +32,7 @@
     "@adonisjs/mail": "^3.0.9",
     "@adonisjs/validator": "^5.0.6",
     "@adonisjs/vow": "^1.0.17",
+    "@adonisjs/vow-browser": "^1.0.7",
     "ant-design-vue": "^1.2.2",
     "axios": "^0.18.0",
     "chart.js": "^2.7.3",
